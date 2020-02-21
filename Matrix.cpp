@@ -16,7 +16,7 @@ Matrix::Matrix(const unsigned N, const unsigned M, const unsigned modulo):N(N),M
     for(int i = 0; i < M; ++i){
         this->values[i] = new int[M];
         for(int j = 0; j < M; ++j){
-            this->values[i][j] = (int) (1 + rand() / (RAND_MAX + 1.0) * modulo);
+            this->values[i][j] = (int) (rand() / (RAND_MAX + 1.0) * modulo);
         }
     }
 }
@@ -26,7 +26,7 @@ Matrix::Matrix(const unsigned N, const unsigned M, const unsigned modulo):N(N),M
  * @param m
  */
 Matrix::Matrix(const Matrix& matrix):N(matrix.N),M(matrix.N),modulo(matrix.modulo){
-
+    //TODO
 }
 
 /**
