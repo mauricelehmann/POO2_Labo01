@@ -53,13 +53,21 @@ Matrix::~Matrix() {
     delete[] this->values;
 }
 
-Matrix Matrix::operator+(Matrix matrix) throw(invalid_argument) {
-    if(matrix.modulo != this->modulo)
-        throw invalid_argument("The modulos should be the same");
+Matrix Matrix::operator+(Matrix matrix){
+    checkModulo(*this, matrix);
     unsigned n = max(this->N, matrix.N);
     unsigned m = max(this->M, matrix.M);
     //TODO : depuis la copie "matrix", resize tt les lignes avec  memcpy( newArr, arr, size * sizeof(int) );
     //Matrix newMatrix = Matrix(n,m,modulo);
     return Matrix(1,1,1);
 
+}
+
+void add(Matrix matrix){
+
+}
+
+void Matrix::checkModulo(const Matrix &m1, const Matrix &m2){
+    if(m1.modulo != m2.modulo)
+        throw invalid_argument("The modulos should be the same");
 }

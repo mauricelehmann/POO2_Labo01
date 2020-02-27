@@ -22,7 +22,7 @@ public:
      * @param m
      * @return
      */
-    Matrix operator+(Matrix m) throw(std::invalid_argument) ;
+    Matrix operator+(Matrix m);
     /**
      *
      * @param os
@@ -30,6 +30,13 @@ public:
      * @return
      */
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
+
+    /**
+     *
+     * @param matrix
+     * @throws invalid_argument
+     */
+    void checkModulo(const Matrix& m1, const Matrix& m2);
 
 
 private:
