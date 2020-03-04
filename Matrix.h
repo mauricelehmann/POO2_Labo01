@@ -36,7 +36,9 @@ public:
      * @param matrix
      * @throws invalid_argument
      */
-    void checkModulo(const Matrix& m1, const Matrix& m2);
+    static void checkModulo(const Matrix& m1, const Matrix& m2);
+
+
 
 
 private:
