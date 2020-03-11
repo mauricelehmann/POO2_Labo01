@@ -39,6 +39,11 @@ public:
     Matrix* addDynamic(const Matrix& matrix) const noexcept(false);
 
     /**
+ *
+ * @param matrix
+ */
+    void subSelf(const Matrix& matrix) noexcept(false);
+    /**
      *
      * @param matrix
      * @return
@@ -52,6 +57,11 @@ public:
     Matrix* subDynamic(const Matrix& matrix) const noexcept(false);
 
 
+    /**
+ *
+ * @param matrix
+ */
+    void multiplySelf(const Matrix& matrix) noexcept(false);
     /**
      *
      * @param matrix
