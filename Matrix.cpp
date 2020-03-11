@@ -86,7 +86,11 @@ Matrix::~Matrix() {
 }
 
 
-void Matrix::addSelf(const Matrix& matrix) const noexcept(false){
+void Matrix::addSelf(const Matrix& matrix) noexcept(false){
+    checkModulo(matrix);
+
+    Addition add;
+    return this->operationSelf(matrix, add);
 
 }
 
@@ -144,13 +148,34 @@ int Matrix::getValue(unsigned numRow, unsigned numCol) const noexcept(false){
     return this->values[numRow][numCol];
 }
 
+unsigned applyModulo( int value, unsigned m) {   //TODO
+    int mod = value % (int)m;
+    if (value < 0) {
+        mod += m;
+    }
+    return mod;
+}
 
 
+void Matrix::operationSelf(const Matrix& matrix, const Operator& op){
+    unsigned row = max(this->ROW, matrix.ROW);
+    unsigned col = max(this->COL, matrix.COL);
 
-void Matrix::operationSelf(const Matrix& m, const Operator& op){
+    Matrix* tmp = new Matrix(row, col, modulo);
 
-    //TODO
-
+    //Copy "this" Matrix into tmp
+    for(int i = 0; i < this->ROW; ++i) {
+        for(int j = 0; j < this->COL; ++j){
+            tmp->values[i][j] = this->values[i][j];
+        }
+    }
+    //Add the values from input matrix
+    for(int i = 0; i < matrix.ROW; ++i) {
+        for(int j = 0; j < matrix.COL; ++j){
+            this->values[i][j] = applyModulo(op.calculate(tmp->values[i][j], matrix.values[i][j]), modulo) ;
+        }
+    }
+    delete(tmp);
 }
 
 
@@ -206,3 +231,4 @@ void Matrix::checkModulo(const Matrix& matrix) const noexcept(false){
     if(matrix.modulo != this->modulo)
         throw invalid_argument("The modulos should be the same");
 }
+

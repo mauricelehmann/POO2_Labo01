@@ -22,7 +22,7 @@ public:
      *
      * @param matrix
      */
-    void addSelf(const Matrix& matrix) const noexcept(false);
+    void addSelf(const Matrix& matrix) noexcept(false);
     /**
      *
      * @param m
@@ -84,7 +84,7 @@ public:
 private:
     int** values;
     unsigned modulo;
-    const unsigned ROW, COL;
+    unsigned ROW, COL;  //pas const pour operationSelf
     static bool isSeedInit;
 
 

@@ -12,6 +12,8 @@ int main() {
 
     cout << m1 << endl ;
     cout << m2 << endl ;
+    m2.addSelf(m1);
+    cout << m2 << endl;
     cout << *m3 << endl;
 
     //Matrix m2(3,4,4);
