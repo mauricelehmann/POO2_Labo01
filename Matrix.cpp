@@ -86,8 +86,11 @@ Matrix::~Matrix() {
 }
 
 
-void Matrix::addSelf(const Matrix& matrix) const noexcept(false){
+void Matrix::addSelf(const Matrix& matrix) noexcept(false){
+    checkModulo(matrix);
 
+    Addition add;
+    this->operationSelf(matrix, add);
 }
 
 Matrix Matrix::addStatic(const Matrix& matrix) const noexcept(false){
@@ -105,6 +108,14 @@ Matrix* Matrix::addDynamic(const Matrix& matrix) const noexcept(false){
     return operationDynamic(matrix, add);
 }
 
+void Matrix::subSelf(const Matrix& matrix) noexcept(false){
+    checkModulo(matrix);
+
+    Subtraction sub;
+    this->operationSelf(matrix, sub);
+
+}
+
 Matrix Matrix::subStatic(const Matrix& matrix) const noexcept(false){
     checkModulo(matrix);
 
@@ -120,6 +131,13 @@ Matrix* Matrix::subDynamic(const Matrix& matrix) const noexcept(false){
     return operationDynamic(matrix, sub);
 }
 
+void Matrix::multiplySelf(const Matrix& matrix) noexcept(false){
+    checkModulo(matrix);
+
+    Multiplication mult;
+    this->operationSelf(matrix, mult);
+
+}
 
 Matrix Matrix::multiplyStatic(const Matrix& matrix) const noexcept(false){
     checkModulo(matrix);
@@ -144,13 +162,25 @@ int Matrix::getValue(unsigned numRow, unsigned numCol) const noexcept(false){
     return this->values[numRow][numCol];
 }
 
+unsigned applyModulo( int value, unsigned m) {   //TODO
+    int mod = value % (int)m;
+    if (value < 0) {
+        mod += m;
+    }
+    return mod;
+}
 
 
+void Matrix::operationSelf(const Matrix& matrix, const Operator& op){
+    unsigned row = max(this->ROW, matrix.ROW);
+    unsigned col = max(this->COL, matrix.COL);
 
-void Matrix::operationSelf(const Matrix& m, const Operator& op){
-
-    //TODO
-
+    //Add the values from input matrix
+    for(int i = 0; i < matrix.ROW; ++i) {
+        for(int j = 0; j < matrix.COL; ++j){
+            this->values[i][j] = applyModulo(op.calculate(this->values[i][j], matrix.values[i][j]), modulo) ;
+        }
+    }
 }
 
 
@@ -206,3 +236,4 @@ void Matrix::checkModulo(const Matrix& matrix) const noexcept(false){
     if(matrix.modulo != this->modulo)
         throw invalid_argument("The modulos should be the same");
 }
+
