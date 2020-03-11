@@ -70,7 +70,7 @@ std::ostream &operator<<(std::ostream &os, const Matrix &m){
     for(int i = 0 ; i < m.ROW ; ++i){
         for(int j = 0 ; j < m.COL ; ++j)
             os << m.values[i][j] << " ";
-        os << endl << endl;
+        os << endl;
     }
     return os;
 }

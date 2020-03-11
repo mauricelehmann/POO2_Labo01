@@ -4,37 +4,129 @@ using namespace std;
 
 int main() {
 
+    /*******************************
+    *   Tests Matrix
+    *******************************/
 
-    Matrix m1(3,3,4);
-    Matrix m2(3,3,4);
-    Matrix* m3 = m1.addDynamic(m2);
+    int modulo = 10;
 
+    cout << "Default constructor\n";
 
-    cout << m1 << endl ;
-    cout << m2 << endl ;
-    cout << *m3 << endl;
+    Matrix m1(3,3,modulo);
+    cout << "m1 (modulo = " << modulo << ")\n" << m1 << endl;
 
-    //Matrix m2(3,4,4);
+    cout << "Copy constructor\n";
 
-	//Test add static
-    //Matrix m3 = m1.addStatic(m2);
-    /*
-    cout << m1 << endl;
-    cout << "m2" << endl;
-    cout << m2 << endl;
-    cout << "m3" << endl;
-    cout << m3 << endl;
+    Matrix m2(m1);
+    cout << "m2 = m1\n" << m2 << endl;
 
-    Matrix* m4 = m1.addDynamic(m2);
-
-    cout << "m4" << endl;
-    cout << *m4 << endl;
-
-    delete m4;
+    {
+        cout << "Operation with static allocation \n\n";
 
 
-*/
+        cout << "Static addition\n m3 = m1 + m2 \n";
+
+        Matrix m3 = m1.addStatic(m2);
+        cout << m3 << endl;
+
+        cout << "Static subtraction\n m4 = m3 - m1\n";
+
+        Matrix m4 = m3.subStatic(m1);
+        cout << m4 << endl;
+
+        cout << "Static multiplication\n m5 = m4 * m1 \n";
+
+        Matrix m5 = m4.multiplyStatic(m1);
+        cout << m5 << endl;
+
+    }
+
+    {
+        //Operations with dynamic allocation
+
+        cout << "Dynamic addition\n";
+
+        Matrix *m3 = m1.addDynamic(m2);
+        cout << *m3 << endl;
+
+        cout << "Dynamic substraction\n";
+
+        Matrix *m4 = m3->subDynamic(m1);
+        cout << *m4 << endl;
+
+
+        cout << "Dynamic multiplication\n";
+
+        Matrix *m5 = m4->multiplyDynamic(m1);
+        cout << *m5 << endl;
+
+
+        delete m3;
+        delete m4;
+        delete m5;
+    }
+
+    {
+        cout << "Operation on self" << endl;
+
+        Matrix m3(5,5,modulo);
+
+        cout << "Addition to self" << endl;
+        //TODO
+        cout << "Substraction to self" << endl;
+        //TODO
+        cout << "Multiplication to self" << endl;
+        //TODO
+    }
+
+
+    {
+        cout << "Operation on different modulo should not work" << endl;
+        Matrix m3(2,5,modulo);
+        Matrix m4(5,2,30);
+
+        //Static
+
+        try {
+            Matrix m5 = m3.addStatic(m4);
+        }catch(invalid_argument& ex){
+            cout << "Exception catched : " << ex.what()<< endl;
+        }
+
+        try {
+            Matrix m5 = m3.subStatic(m4);
+        }catch(invalid_argument& ex){
+            cout << "Exception catched : " << ex.what() << endl;
+        }
+
+        try {
+            Matrix m5 = m3.multiplyStatic(m4);
+        }catch(invalid_argument& ex){
+            cout << "Exception catched : " << ex.what()<< endl;
+        }
+
+        //Dynamic
+
+        try {
+            Matrix* m6 = m3.addDynamic(m4);
+        }catch(invalid_argument& ex){
+            cout << "Exception catched : " << ex.what()<< endl;
+        }
+
+        try {
+            Matrix* m6 = m3.subDynamic(m4);
+        }catch(invalid_argument& ex){
+            cout << "Exception catched : " << ex.what()<< endl;
+        }
+
+        try {
+            Matrix* m6 = m3.multiplyDynamic(m4);
+        }catch(invalid_argument& ex){
+            cout << "Exception catched : " << ex.what()<< endl;
+        }
+    }
+
+
     return 0;
-
 
 }
