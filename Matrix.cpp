@@ -175,11 +175,28 @@ void Matrix::operationSelf(const Matrix& matrix, const Operator& op){
     unsigned col = max(this->COL, matrix.COL);
 
     //Add the values from input matrix
-    for(int i = 0; i < matrix.ROW; ++i) {
+    /*for(int i = 0; i < matrix.ROW; ++i) {
         for(int j = 0; j < matrix.COL; ++j){
             this->values[i][j] = applyModulo(op.calculate(this->values[i][j], matrix.values[i][j]), modulo) ;
         }
+    }*/
+    Matrix tmp(row, col, 0);
+
+    //Copy "this" Matrix into tmp
+    for(int i = 0; i < this->ROW; ++i) {
+        for(int j = 0; j < this->COL; ++j){
+            tmp.values[i][j] = this->values[i][j];
+        }
     }
+    //Add the values from input matrix
+    for(int i = 0; i < matrix.ROW; ++i) {
+        for(int j = 0; j < matrix.COL; ++j){
+            //TODO: Fix le modulo ! Attention au nombre négatifs !!! -3 % 5 devrait donner 2 et non -2 !
+            tmp.values[i][j] = op.calculate(tmp.values[i][j], matrix.values[i][j]) % modulo ;
+        }
+    }
+    tmp.modulo = modulo;
+    *this = Matrix(tmp);
 }
 
 
