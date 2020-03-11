@@ -48,14 +48,13 @@ Matrix::Matrix(const unsigned row, const unsigned col, const unsigned modulo) no
  * @param m
  */
 Matrix::Matrix(const Matrix& matrix):ROW(matrix.ROW),COL(matrix.COL),modulo(matrix.modulo){
-
 	this->values = new int*[ROW];
     for(int i = 0; i < ROW; ++i){
-
         this->values[i] = new int[COL];
         //Fill value
         for(int j = 0; j < COL; ++j){
-            this->values[i][j] = matrix.values[i][j];
+            //this->values[i][j] = matrix.values[i][j];
+            this->values[i][j] = matrix.getValue(i,j);
         }
     }
 }
