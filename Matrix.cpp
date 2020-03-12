@@ -10,8 +10,6 @@
 using namespace std;
 
 
-
-
 bool Matrix::isSeedInit = false;
 
 /**
@@ -35,7 +33,6 @@ Matrix::Matrix(const unsigned row, const unsigned col, const unsigned modulo) no
     this->values = new int*[row];
 
     for(int i = 0; i < row; ++i){
-
         this->values[i] = new int[col];
         //Fill value
         for(int j = 0; j < col; ++j)
@@ -53,6 +50,7 @@ Matrix::Matrix(const Matrix& matrix):ROW(matrix.ROW),COL(matrix.COL),modulo(matr
     for(int i = 0; i < ROW; ++i){
 
         this->values[i] = new int[COL];
+
         //Fill value
         for(int j = 0; j < COL; ++j){
             this->values[i][j] = matrix.values[i][j];
@@ -79,10 +77,7 @@ std::ostream &operator<<(std::ostream &os, const Matrix &m){
  */
 Matrix::~Matrix() {
 
-    for(int i = 0; i < COL; ++i){
-        delete[] this->values[i];
-    }
-    delete[] this->values;
+    desallocateValues(this->values, ROW);
 }
 
 
@@ -152,73 +147,97 @@ unsigned Matrix::applyModulo(int value, unsigned m) const{
     return mod;
 }
 
-void Matrix::resize(const Matrix& matrix){
-    unsigned row = max(this->ROW, matrix.ROW);
-    unsigned col = max(this->COL, matrix.COL);
 
-    Matrix tmp(row, col, 0);
+void Matrix::resize(const unsigned newRow, const unsigned newCol){
 
-    //Copy "this" Matrix into tmp
-    for(int i = 0; i < this->ROW; ++i) {
-        for(int j = 0; j < this->COL; ++j){
-            tmp.values[i][j] = this->values[i][j];
+
+    //Init. new int**
+    int** newValues = new int*[newRow];
+
+    //Copy old values into new one
+    for(int i = 0; i < newRow; ++i) {
+        newValues[i] = new int[newCol];
+        for (int j = 0; j < newCol; ++j) {
+            if(j < COL && i < ROW) {
+                newValues[i][j] = values[i][j];
+            }else{
+                newValues[i][j] = 0;
+            }
         }
     }
-    tmp.modulo = modulo;
-    *this = tmp;
+
+    //Desallocate old values
+    desallocateValues(this->values, ROW);
+
+    //Change the ptr of values
+    this->values = newValues;
+
+    //Range range
+    this->COL = newCol;
+    this->ROW = newRow;
 }
 
+void Matrix::desallocateValues(int** values, unsigned row){
+    for(int i = 0; i < row; ++i){
+        delete[] values[i];
+    }
+    delete[] values;
+}
 
 void Matrix::operationSelf(const Matrix& matrix, const Operator& op){
     checkModulo(matrix);
-    Matrix output = *this;
-    output.resize(matrix);
+    unsigned row = max(this->ROW, matrix.ROW);
+    unsigned col = max(this->COL, matrix.COL);
+
+
+    //Resize the matrix
+    this->resize(row, col);
+
     for(int i = 0; i < matrix.ROW; ++i) {
         for(int j = 0; j < matrix.COL; ++j){
-            output.values[i][j] = applyModulo(op.calculate(output.values[i][j], matrix.values[i][j]), modulo) ;
+            values[i][j] = applyModulo(op.calculate(matrix.values[i][j], values[i][j]), modulo) ;
         }
     }
-    //tmp.modulo = modulo;
-    *this =  output;
+
 }
 
 
 Matrix Matrix::operationStatic(const Matrix& matrix, const Operator& op) const {
     checkModulo(matrix);
-   Matrix output = *this;
-   output.resize(matrix);
-    for(int i = 0; i < matrix.ROW; ++i) {
-        for(int j = 0; j < matrix.COL; ++j){
-            output.values[i][j] =applyModulo(op.calculate(output.values[i][j], matrix.values[i][j]), modulo) ;
+    unsigned row = max(this->ROW, matrix.ROW);
+    unsigned col = max(this->COL, matrix.COL);
+
+    Matrix returnMatrix(matrix);
+
+    returnMatrix.resize(row, col);
+
+    for(int i = 0; i < ROW; ++i) {
+        for(int j = 0; j < COL; ++j){
+            returnMatrix.values[i][j] = applyModulo(op.calculate(returnMatrix.values[i][j], values[i][j]), modulo) ;
         }
     }
-    return output;
 
+    return returnMatrix;
 }
 
 
 Matrix* Matrix::operationDynamic(const Matrix& matrix, const Operator& op) const {
+
     checkModulo(matrix);
     unsigned row = max(this->ROW, matrix.ROW);
     unsigned col = max(this->COL, matrix.COL);
 
-    Matrix* tmp = new Matrix(row, col, 0);
+    Matrix* returnMatrix = new Matrix(matrix);
 
-    //Copy "this" Matrix into tmp
-    for(int i = 0; i < this->ROW; ++i) {
-        for(int j = 0; j < this->COL; ++j){
-            tmp->values[i][j] = this->values[i][j];
+    returnMatrix->resize(row, col);
+
+    for(int i = 0; i < ROW; ++i) {
+        for(int j = 0; j < COL; ++j){
+            returnMatrix->values[i][j] = applyModulo(op.calculate(returnMatrix->values[i][j], values[i][j]), modulo) ;
         }
     }
-    //Add the values from input matrix
-    for(int i = 0; i < matrix.ROW; ++i) {
-        for(int j = 0; j < matrix.COL; ++j){
-            //TODO: Fix le modulo ! Attention au nombre négatifs !!! -3 % 5 devrait donner 2 et non -2 !
-            tmp->values[i][j] = applyModulo(op.calculate(tmp->values[i][j], matrix.values[i][j]), modulo) ;
-        }
-    }
-    tmp->modulo = modulo;
-    return tmp;
+
+    return returnMatrix;
 }
 
 void Matrix::checkModulo(const Matrix& matrix) const noexcept(false){

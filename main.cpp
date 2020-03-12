@@ -8,6 +8,7 @@ int main() {
     *   Tests Matrix
     *******************************/
 
+
     int modulo = 10;
 
     cout << "Default constructor\n";
@@ -18,11 +19,9 @@ int main() {
     cout << "Copy constructor\n";
 
     Matrix m2(m1);
-    //m1.addSelf(m2); cout << m1 << endl;
+
     cout << "m2 = m1\n" << m2 << endl;
-    /*Matrix m3 = m2;
-    m3.addSelf(m3);
-    cout << "m3 = m2\n" << m3 << endl << m2 << endl;*/
+
 
     {
         cout << "Operation with static allocation \n\n";
@@ -76,13 +75,19 @@ int main() {
         //Matrix tmp = m1;
         Matrix m2(3,4,modulo);
         cout << m1 << endl << m2 << endl;
+
+
         cout << "Addition to self" << endl;
         m1.addSelf(m2);
         cout << m1 << endl;
+
+
         cout << "Substraction to self" << endl;
         //m1 = tmp;
         m1.subSelf(m2);
         cout << m1 << endl;
+
+
         //cout << tmp << endl;    //TODO pb constructeur copie
         cout << "Multiplication to self" << endl;
         //m1 = tmp;
@@ -137,8 +142,7 @@ int main() {
             cout << "Exception catched : " << ex.what()<< endl;
         }
     }
-
-
+    
     return 0;
 
 }

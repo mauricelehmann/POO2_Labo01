@@ -93,20 +93,60 @@ public:
     Matrix& operator=(const Matrix& m);
 
 
+
 private:
+
     int** values;
     unsigned modulo;
-    unsigned ROW, COL;  //pas const pour operationSelf
+    unsigned ROW, COL;
     static bool isSeedInit;
 
 
+    /**
+     *
+     * @param matrix
+     * @param op
+     */
     void operationSelf(const Matrix& matrix, const Operator& op);
+    /**
+     *
+     * @param matrix
+     * @param op
+     * @return
+     */
     Matrix operationStatic(const Matrix& matrix, const Operator& op) const;
+    /**
+     *
+     * @param matrix
+     * @param op
+     * @return
+     */
     Matrix* operationDynamic(const Matrix& matrix, const Operator& op) const ;
 
+    /**
+     *
+     * @param matrix
+     */
     void checkModulo(const Matrix& matrix) const noexcept(false);
-    void resize(const Matrix& matrix);
+    /**
+     *
+     * @param value
+     * @param m
+     * @return
+     */
     unsigned applyModulo(int value, unsigned m) const;
+    /**
+     *
+     * @param newRow
+     * @param newCol
+     */
+    void resize(const unsigned newRow, const unsigned newCol);
+    /**
+     *
+     * @param values
+     * @param col
+     */
+    void desallocateValues(int** values, unsigned col);
 
 };
 
