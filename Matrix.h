@@ -106,6 +106,7 @@ private:
 
     void checkModulo(const Matrix& matrix) const noexcept(false);
     void resize(const Matrix& matrix);
+    unsigned applyModulo(int value, unsigned m);
 
 };
 

@@ -144,12 +144,10 @@ int Matrix::getValue(unsigned numRow, unsigned numCol) const noexcept(false){
     return this->values[numRow][numCol];
 }
 
-unsigned applyModulo( int value, unsigned m) {   //TODO
+unsigned Matrix::applyModulo(int value, unsigned m){
     int mod = value %(int)m;
     if (mod < 0) {
-        cout << mod << " " << m << endl;
         mod += m;
-
     }
     return mod;
 }
