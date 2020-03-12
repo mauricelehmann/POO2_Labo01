@@ -90,6 +90,8 @@ public:
      */
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
+    Matrix& operator=(const Matrix& m);
+
 
 private:
     int** values;
@@ -103,6 +105,7 @@ private:
     Matrix* operationDynamic(const Matrix& matrix, const Operator& op) const ;
 
     void checkModulo(const Matrix& matrix) const noexcept(false);
+    void resize(const Matrix& matrix);
 
 };
 
