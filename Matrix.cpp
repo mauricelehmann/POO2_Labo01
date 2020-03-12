@@ -178,7 +178,6 @@ void Matrix::operationSelf(const Matrix& matrix, const Operator& op){
             output.values[i][j] = applyModulo(op.calculate(output.values[i][j], matrix.values[i][j]), modulo) ;
         }
     }
-    //tmp.modulo = modulo;
     *this =  output;
 }
 
@@ -199,10 +198,8 @@ Matrix Matrix::operationStatic(const Matrix& matrix, const Operator& op) const {
 
 Matrix* Matrix::operationDynamic(const Matrix& matrix, const Operator& op) const {
     checkModulo(matrix);
-    unsigned row = max(this->ROW, matrix.ROW);
-    unsigned col = max(this->COL, matrix.COL);
-
-    Matrix* tmp = new Matrix(row, col, 0);
+    Matrix* tmp = new Matrix(ROW, COL, 0);
+    tmp->modulo = modulo;
 
     //Copy "this" Matrix into tmp
     for(int i = 0; i < this->ROW; ++i) {
@@ -210,14 +207,14 @@ Matrix* Matrix::operationDynamic(const Matrix& matrix, const Operator& op) const
             tmp->values[i][j] = this->values[i][j];
         }
     }
+    tmp->resize(matrix);
     //Add the values from input matrix
     for(int i = 0; i < matrix.ROW; ++i) {
         for(int j = 0; j < matrix.COL; ++j){
-            //TODO: Fix le modulo ! Attention au nombre négatifs !!! -3 % 5 devrait donner 2 et non -2 !
             tmp->values[i][j] = applyModulo(op.calculate(tmp->values[i][j], matrix.values[i][j]), modulo) ;
         }
     }
-    tmp->modulo = modulo;
+
     return tmp;
 }
 
