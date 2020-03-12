@@ -1,6 +1,9 @@
-//
-// Created by mle on 20.02.2020.
-//
+/*
+ * File:   Matrix.h
+ * POO2 - Labo 1
+ * Author: Maurice Lehmann, Claire Delhomme
+ *
+ */
 
 #ifndef MATRIX_H
 #define MATRIX_H
@@ -107,6 +110,7 @@ private:
     void checkModulo(const Matrix& matrix) const noexcept(false);
     void resize(const Matrix& matrix);
     unsigned applyModulo(int value, unsigned m) const;
+    void computeMatrix(const Matrix& matrix, const Operator& op);
 
 };
 

@@ -1,3 +1,10 @@
+/*
+ * File:   Main.cpp
+ * POO2 - Labo 1
+ * Author: Maurice Lehmann, Claire Delhomme
+ *
+ */
+
 #include <iostream>
 #include "Matrix.h"
 using namespace std;

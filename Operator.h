@@ -1,6 +1,9 @@
-//
-// Created by mle on 04.03.2020.
-//
+/*
+ * File:   Operator.h
+ * POO2 - Labo 1
+ * Author: Maurice Lehmann, Claire Delhomme
+ *
+ */
 
 #ifndef SRC_OPERATOR_H
 #define SRC_OPERATOR_H
