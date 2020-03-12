@@ -87,68 +87,50 @@ Matrix::~Matrix() {
 
 
 void Matrix::addSelf(const Matrix& matrix) noexcept(false){
-    checkModulo(matrix);
-
     Addition add;
     this->operationSelf(matrix, add);
 }
 
 Matrix Matrix::addStatic(const Matrix& matrix) const noexcept(false){
-    checkModulo(matrix);
-
     Addition add;
     return this->operationStatic(matrix, add);
 
 }
 
 Matrix* Matrix::addDynamic(const Matrix& matrix) const noexcept(false){
-    checkModulo(matrix);
-
     Addition add;
     return operationDynamic(matrix, add);
 }
 
 void Matrix::subSelf(const Matrix& matrix) noexcept(false){
-    checkModulo(matrix);
-
     Subtraction sub;
     this->operationSelf(matrix, sub);
 
 }
 
 Matrix Matrix::subStatic(const Matrix& matrix) const noexcept(false){
-    checkModulo(matrix);
-
     Subtraction sub;
     return this->operationStatic(matrix, sub);
 
 }
 
 Matrix* Matrix::subDynamic(const Matrix& matrix) const noexcept(false){
-    checkModulo(matrix);
-
     Subtraction sub;
     return operationDynamic(matrix, sub);
 }
 
 void Matrix::multiplySelf(const Matrix& matrix) noexcept(false){
-    checkModulo(matrix);
-
     Multiplication mult;
     this->operationSelf(matrix, mult);
 
 }
 
 Matrix Matrix::multiplyStatic(const Matrix& matrix) const noexcept(false){
-    checkModulo(matrix);
-
     Multiplication mul;
     return this->operationStatic(matrix, mul);
 }
 
 Matrix* Matrix::multiplyDynamic(const Matrix& matrix) const noexcept(false){
-    checkModulo(matrix);
-
     Multiplication mul;
     return operationDynamic(matrix, mul);
 }
@@ -183,10 +165,12 @@ void Matrix::resize(const Matrix& matrix){
         }
     }
     tmp.modulo = modulo;
+    *this = tmp;
 }
 
 
 void Matrix::operationSelf(const Matrix& matrix, const Operator& op){
+    checkModulo(matrix);
     unsigned row = max(this->ROW, matrix.ROW);
     unsigned col = max(this->COL, matrix.COL);
 
@@ -206,36 +190,28 @@ void Matrix::operationSelf(const Matrix& matrix, const Operator& op){
         }
     }
 
-    *this = Matrix(tmp);
+    *this = tmp;
 }
 
 
 Matrix Matrix::operationStatic(const Matrix& matrix, const Operator& op) const {
-
-    unsigned row = max(this->ROW, matrix.ROW);
-    unsigned col = max(this->COL, matrix.COL);
-
-    Matrix tmp(row, col, 0);
-
-    //Copy "this" Matrix into tmp
-    for(int i = 0; i < this->ROW; ++i) {
-        for(int j = 0; j < this->COL; ++j){
-            tmp.values[i][j] = this->values[i][j];
-        }
-    }
-    //Add the values from input matrix
+    checkModulo(matrix);
+   Matrix output = *this;
+   output.resize(matrix);
     for(int i = 0; i < matrix.ROW; ++i) {
         for(int j = 0; j < matrix.COL; ++j){
             //TODO: Fix le modulo ! Attention au nombre négatifs !!! -3 % 5 devrait donner 2 et non -2 !
-            tmp.values[i][j] = op.calculate(tmp.values[i][j], matrix.values[i][j]) % modulo ;
+            output.values[i][j] = op.calculate(output.values[i][j], matrix.values[i][j]) % modulo ;
         }
     }
-    tmp.modulo = modulo;
-    return tmp;
+    //tmp.modulo = modulo;
+    return output;
+
 }
 
 
 Matrix* Matrix::operationDynamic(const Matrix& matrix, const Operator& op) const {
+    checkModulo(matrix);
     unsigned row = max(this->ROW, matrix.ROW);
     unsigned col = max(this->COL, matrix.COL);
 
