@@ -145,9 +145,11 @@ int Matrix::getValue(unsigned numRow, unsigned numCol) const noexcept(false){
 }
 
 unsigned applyModulo( int value, unsigned m) {   //TODO
-    int mod = value % (int)m;
-    if (value < 0) {
+    int mod = value %(int)m;
+    if (mod < 0) {
+        cout << mod << " " << m << endl;
         mod += m;
+
     }
     return mod;
 }
@@ -186,7 +188,7 @@ void Matrix::operationSelf(const Matrix& matrix, const Operator& op){
     //Add the values from input matrix
     for(int i = 0; i < matrix.ROW; ++i) {
         for(int j = 0; j < matrix.COL; ++j){
-            tmp.values[i][j] = op.calculate(tmp.values[i][j], matrix.values[i][j]) % modulo ;// applyModulo(op.calculate(tmp.values[i][j], matrix.values[i][j]), modulo) ; //TODO pb
+            tmp.values[i][j] = applyModulo(op.calculate(tmp.values[i][j], matrix.values[i][j]), modulo) ; //TODO pb
         }
     }
 
@@ -201,7 +203,7 @@ Matrix Matrix::operationStatic(const Matrix& matrix, const Operator& op) const {
     for(int i = 0; i < matrix.ROW; ++i) {
         for(int j = 0; j < matrix.COL; ++j){
             //TODO: Fix le modulo ! Attention au nombre négatifs !!! -3 % 5 devrait donner 2 et non -2 !
-            output.values[i][j] = op.calculate(output.values[i][j], matrix.values[i][j]) % modulo ;
+            output.values[i][j] =applyModulo(op.calculate(output.values[i][j], matrix.values[i][j]), modulo) ;
         }
     }
     //tmp.modulo = modulo;
@@ -227,7 +229,7 @@ Matrix* Matrix::operationDynamic(const Matrix& matrix, const Operator& op) const
     for(int i = 0; i < matrix.ROW; ++i) {
         for(int j = 0; j < matrix.COL; ++j){
             //TODO: Fix le modulo ! Attention au nombre négatifs !!! -3 % 5 devrait donner 2 et non -2 !
-            tmp->values[i][j] = op.calculate(tmp->values[i][j], matrix.values[i][j]) % modulo ;
+            tmp->values[i][j] = applyModulo(op.calculate(tmp->values[i][j], matrix.values[i][j]), modulo) ;
         }
     }
     tmp->modulo = modulo;
