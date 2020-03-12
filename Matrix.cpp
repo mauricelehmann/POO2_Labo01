@@ -3,7 +3,6 @@
  * POO2 - Labo 1
  * Author: Maurice Lehmann, Claire Delhomme
  *
- * Created on 4 March 2020
  */
 
 #include "Matrix.h"
@@ -12,12 +11,6 @@ using namespace std;
 
 bool Matrix::isSeedInit = false;
 
-/**
- *
- * @param N
- * @param M
- * @param modulo
- */
 Matrix::Matrix(const unsigned row, const unsigned col, const unsigned modulo) noexcept(false)
 :ROW(row),COL(col),modulo(modulo)
 {
@@ -40,10 +33,6 @@ Matrix::Matrix(const unsigned row, const unsigned col, const unsigned modulo) no
     }
 }
 
-/**
- *
- * @param m
- */
 Matrix::Matrix(const Matrix& matrix):ROW(matrix.ROW),COL(matrix.COL),modulo(matrix.modulo){
 
 	this->values = new int*[ROW];
@@ -58,12 +47,6 @@ Matrix::Matrix(const Matrix& matrix):ROW(matrix.ROW),COL(matrix.COL),modulo(matr
     }
 }
 
-/**
- *
- * @param os
- * @param m
- * @return
- */
 std::ostream &operator<<(std::ostream &os, const Matrix &m){
     for(int i = 0 ; i < m.ROW ; ++i){
         for(int j = 0 ; j < m.COL ; ++j)
@@ -72,9 +55,7 @@ std::ostream &operator<<(std::ostream &os, const Matrix &m){
     }
     return os;
 }
-/**
- *
- */
+
 Matrix::~Matrix() {
 
     desallocateValues(this->values, ROW);
