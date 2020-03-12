@@ -144,7 +144,7 @@ int Matrix::getValue(unsigned numRow, unsigned numCol) const noexcept(false){
     return this->values[numRow][numCol];
 }
 
-unsigned Matrix::applyModulo(int value, unsigned m){
+unsigned Matrix::applyModulo(int value, unsigned m) const{
     int mod = value %(int)m;
     if (mod < 0) {
         mod += m;
