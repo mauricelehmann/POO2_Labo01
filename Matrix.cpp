@@ -129,7 +129,6 @@ int Matrix::getValue(unsigned numRow, unsigned numCol) const noexcept(false){
 }
 
 void Matrix::computeMatrix(const Matrix& matrix, const Operator& op){
-    //this->resize(matrix);
     Matrix tmp = matrix;
     if(matrix.COL > COL || matrix.ROW > ROW){
         this->resize(matrix);

@@ -11,6 +11,12 @@
 
 class Operator  {
 public:
+    /**
+     *  Méthode virtuelle
+     * @param a
+     * @param b
+     * @return
+     */
     virtual int calculate(int a, int b) const = 0;
 };
 

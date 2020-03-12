@@ -22,59 +22,64 @@ public:
     ~Matrix();
 
     /**
+     *  OperationSelf addition
      *
-     * @param matrix
+     * @param matrix    l'autre matrice de l'opération
      */
     void addSelf(const Matrix& matrix) noexcept(false);
     /**
+     *  OperationStatic addition
      *
-     * @param m
-     * @return
+     * @param matrix    l'autre matrice de l'opération
+     * @return  la matrice résultat allouée statiquement
      */
     Matrix addStatic(const Matrix& matrix) const noexcept(false);
-
-
     /**
+     *  OperationDynamic addition
      *
-     * @param matrix
-     * @return
+     * @param matrix    l'autre matrice de l'opération
+     * @return  la matrice résultat allouée dynamiquement
      */
     Matrix* addDynamic(const Matrix& matrix) const noexcept(false);
-
     /**
- *
- * @param matrix
- */
+     *  OperationSelf soustraction
+     *
+     * @param matrix    l'autre matrice de l'opération
+     */
     void subSelf(const Matrix& matrix) noexcept(false);
     /**
+     *  OperationStatic soustraction
      *
-     * @param matrix
-     * @return
+     * @param matrix    l'autre matrice de l'opération
+     * @return  la matrice résultat allouée statiquement
      */
     Matrix subStatic(const Matrix& matrix) const noexcept(false);
     /**
+     *  OperationDynamic soustraction
      *
-     * @param matrix
-     * @return
+     * @param matrix    l'autre matrice de l'opération
+     * @return  la matrice résultat allouée dynamiquement
      */
     Matrix* subDynamic(const Matrix& matrix) const noexcept(false);
 
-
     /**
- *
- * @param matrix
- */
+     *  OperationSelf multiplication
+     *
+     * @param matrix    l'autre matrice de l'opération
+     */
     void multiplySelf(const Matrix& matrix) noexcept(false);
     /**
-     *
-     * @param matrix
-     * @return
-     */
+      *  OperationStatic multiplication
+      *
+      * @param matrix    l'autre matrice de l'opération
+      * @return  la matrice résultat allouée dynamiquement
+      */
     Matrix multiplyStatic(const Matrix& matrix) const noexcept(false);
     /**
+     *  OperationDynamic multiplication
      *
-     * @param matrix
-     * @return
+     * @param matrix    l'autre matrice de l'opération
+     * @return  la matrice résultat allouée dynamiquement
      */
     Matrix* multiplyDynamic(const Matrix& matrix) const noexcept(false);
 
@@ -87,12 +92,22 @@ public:
     int getValue(unsigned x, unsigned y) const noexcept(false);
 
     /**
-     * @param os
-     * @param m
-     * @return
+     * Surcharge de l'opérateur d'affichage
+     *
+     * @param os    flux de sortie
+     * @param m     matrice à afficher
+     * @return      une référence au flux de sortie
      */
     friend std::ostream& operator<<(std::ostream& os, const Matrix& m);
 
+
+    /**
+     * Surcharge de l'opérateur d'affectaion
+     * Appelle le constructeur par copie
+     *
+     * @param m matrice à copier
+     * @return  une référence à la matrice affectée
+     */
     Matrix& operator=(const Matrix& m);
 
 
@@ -104,7 +119,7 @@ private:
 
 
     /**
-     *  Opération effectuée en modifiant la matrice sur laquelle est invoquée la méthode,
+     *  Opération effectuée en modifiant la matrice sur laquelle est invoquée la méthode
      *
      * @param matrix    l'autre matrice dans l'opération
      * @param op        l'opérateur à appliquer
@@ -148,7 +163,7 @@ private:
      */
     unsigned applyModulo(int value, unsigned m) const;
     /**
-     *  Redimensionne la matrice appelante et applique
+     *  Redimensionne la matrice appelante si besoin et calcule l'opération entre deux matrices
      *
      * @param matrix    l'autre matrice dans l'opération
      * @param op        l'opérateur à appliquer
