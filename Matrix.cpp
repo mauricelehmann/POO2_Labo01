@@ -167,57 +167,23 @@ void Matrix::desallocateValues(int** values, unsigned row){
 
 void Matrix::operationSelf(const Matrix& matrix, const Operator& op){
     checkModulo(matrix);
-    unsigned row = max(this->ROW, matrix.ROW);
-    unsigned col = max(this->COL, matrix.COL);
-
-
-    //Resize the matrix
-    this->resize(row, col);
-
-    for(int i = 0; i < matrix.ROW; ++i) {
-        for(int j = 0; j < matrix.COL; ++j){
-            values[i][j] = applyModulo(op.calculate(matrix.values[i][j], values[i][j]), modulo) ;
-        }
-    }
+    this->computeMatrix(matrix, op);
 
 }
 
 
 Matrix Matrix::operationStatic(const Matrix& matrix, const Operator& op) const {
     checkModulo(matrix);
-    unsigned row = max(this->ROW, matrix.ROW);
-    unsigned col = max(this->COL, matrix.COL);
-
     Matrix returnMatrix(matrix);
-
-    returnMatrix.resize(row, col);
-
-    for(int i = 0; i < ROW; ++i) {
-        for(int j = 0; j < COL; ++j){
-            returnMatrix.values[i][j] = applyModulo(op.calculate(returnMatrix.values[i][j], values[i][j]), modulo) ;
-        }
-    }
-
+    returnMatrix.computeMatrix(matrix, op);
     return returnMatrix;
 }
 
 
 Matrix* Matrix::operationDynamic(const Matrix& matrix, const Operator& op) const {
-
     checkModulo(matrix);
-    unsigned row = max(this->ROW, matrix.ROW);
-    unsigned col = max(this->COL, matrix.COL);
-
-    Matrix* returnMatrix = new Matrix(matrix);
-
-    returnMatrix->resize(row, col);
-
-    for(int i = 0; i < ROW; ++i) {
-        for(int j = 0; j < COL; ++j){
-            returnMatrix->values[i][j] = applyModulo(op.calculate(returnMatrix->values[i][j], values[i][j]), modulo) ;
-        }
-    }
-
+    Matrix* returnMatrix = new Matrix(*this);
+    returnMatrix->computeMatrix(matrix, op);
     return returnMatrix;
 }
 
@@ -233,4 +199,20 @@ Matrix& Matrix::operator=(const Matrix& m){
     this->COL = tmp.COL;
     this->ROW = tmp.ROW;
     return *this;
+}
+
+void Matrix::computeMatrix(const Matrix& matrix, const Operator& op){
+    Matrix tmp(matrix);
+    if(matrix.ROW > ROW || matrix.COL > COL){
+        this->resize(matrix.ROW, matrix.COL);
+    }
+    if(ROW > matrix.ROW || COL > matrix.COL){
+        tmp.resize(this->ROW, this->COL);
+    }
+
+    for(int i = 0; i < ROW; ++i) {
+        for(int j = 0; j < COL; ++j){
+            this->values[i][j] = applyModulo(op.calculate(this->values[i][j], tmp.values[i][j]), modulo) ;
+        }
+    }
 }

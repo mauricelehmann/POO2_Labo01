@@ -73,7 +73,7 @@ int main() {
         cout << "Operation on self" << endl;
         Matrix m1(3,3,modulo);
         //Matrix tmp = m1;
-        Matrix m2(3,4,modulo);
+        Matrix m2(1,2,modulo);
         cout << m1 << endl << m2 << endl;
 
 
