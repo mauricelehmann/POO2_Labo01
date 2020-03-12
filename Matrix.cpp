@@ -129,10 +129,17 @@ int Matrix::getValue(unsigned numRow, unsigned numCol) const noexcept(false){
 }
 
 void Matrix::computeMatrix(const Matrix& matrix, const Operator& op){
-    this->resize(matrix);
+    //this->resize(matrix);
+    Matrix tmp = matrix;
+    if(matrix.COL > COL || matrix.ROW > ROW){
+        this->resize(matrix);
+    }
+    if(COL > matrix.COL || ROW > matrix.ROW){
+        tmp.resize(*this);
+    }
     for(int i = 0; i < ROW; ++i) {
         for(int j = 0; j < COL; ++j){
-            this->values[i][j] = applyModulo(op.calculate(this->values[i][j], matrix.values[i][j]), modulo) ;
+            this->values[i][j] = applyModulo(op.calculate(this->values[i][j], tmp.values[i][j]), modulo) ;
         }
     }
 }
